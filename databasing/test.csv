@@ -1,7 +1,0 @@
-number,contract_name,address,latitude,longitude,banking,bonus,bike_stands,available_bike_stands,available_bikes,status,last_update
-30,Dublin,Parnell Square North,53.353462,-6.265305,1,0,20,17,3,OPEN,1550582075000
-54,Dublin,Clonmel Street,53.336021,-6.26298,0,0,33,28,5,OPEN,1550582147000
-108,Dublin,Avondale Road,53.359405,-6.276142,0,0,40,39,0,OPEN,1550582238000
-56,Dublin,Mount Street Lower,53.33796,-6.24153,0,0,40,16,24,OPEN,1550582258000
-6,Dublin,Christchurch Place,53.343368,-6.27012,0,0,20,20,0,OPEN,1550582163000
-18,Dublin,Grantham Street,53.334123,-6.265436,1,0,30,26,4,OPEN,1550582272000
