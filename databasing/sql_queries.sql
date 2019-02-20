@@ -32,6 +32,7 @@ temperature DECIMAL(3,1)
 -- CREATE DYNAMIC DATA
 
 CREATE TABLE dynamicdata (
+counter_id INT,
 station_id INT,
 timestamp INT(15),
 weather_id INT,
