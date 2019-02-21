@@ -30,9 +30,9 @@ class Scraper:
 
     def main(self):
         self.populate_weather()
-        time.sleep(1)
-        for i in range(5): 
-            if self._jcd_counter % 4 == 0:
+        while True:
+            time.sleep(1)
+            if self._jcd_counter % 12 == 0:
                 self._weather_counter += 1
                 self.populate_weather()
             self.populate_bikes()
@@ -56,7 +56,7 @@ class Scraper:
         self.insert_to_db("dynamicdata", Scraper.STATIONS_PATH)
         print("successfully populated bikes")
         self._jcd_counter += 1
-        time.sleep(1)
+        time.sleep(30)
 
     def get_bike_json(self):
         r = requests.get(Scraper.STATIONS_URL, params={"apiKey": Scraper.BIKE_APIKEY,"contract": Scraper.NAME})
