@@ -9,7 +9,7 @@ from datetime import datetime
 
 class Scraper:
 
-    PASSWORD = private.pw
+    
     WEATHER_APIKEY = private.yvette_weather_api
     BIKE_APIKEY = private.jcd_api
     LANGUAGE = "en-us"
@@ -20,7 +20,10 @@ class Scraper:
     STATIONS_PATH = private.stations
     NAME = "dublin"
     STATIC_PATH = private.static_path
-    SQL_USER = private.sql_user
+    SQL_USER = private.raph_rds_user
+    SQL_HOST = private.raph_rds_host
+    PASSWORD = private.raph_rds_pw
+
 
     def __init__(self):
         self._jcd_counter = 1
@@ -107,10 +110,8 @@ class Scraper:
     
     def insert_to_db(self, tablename, filename):
         path = filename
-        cnx = MySQLdb.connect(user=Scraper.SQL_USER, password=Scraper.PASSWORD,
-                                host='localhost',
+        cnx = MySQLdb.connect(user=Scraper.SQL_USER, password=Scraper.PASSWORD, host=Scraper.SQL_HOST,
                                 database='comp30830', local_infile=True)
-
         # opening the cursor    
         cursor = cnx.cursor()
         script = """
@@ -138,4 +139,4 @@ class Scraper:
 my_test = Scraper()
 
 # my_test.populate_weather()
-my_test.main()
+my_test.insert_to_db("weatherdata", Scraper.WEATHER_PATH)
