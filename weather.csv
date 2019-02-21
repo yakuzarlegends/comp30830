@@ -1,2 +1,2 @@
-WeatherText,Temperature - Celcius
-3,Mostly cloudy,12.2
+WeatherText,Temperature - Celcius,timestamp
+1,Cloudy,13.9,1550755860
