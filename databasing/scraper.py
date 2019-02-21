@@ -20,6 +20,7 @@ class Scraper:
     STATIONS_PATH = private.stations
     NAME = "dublin"
     STATIC_PATH = private.static_path
+    SQL_USER = private.sql_user
 
     def __init__(self):
         self._jcd_counter = 1
@@ -106,7 +107,7 @@ class Scraper:
     
     def insert_to_db(self, tablename, filename):
         path = filename
-        cnx = MySQLdb.connect(user='root', password=Scraper.PASSWORD,
+        cnx = MySQLdb.connect(user=Scraper.SQL_USER, password=Scraper.PASSWORD,
                                 host='localhost',
                                 database='comp30830', local_infile=True)
 
