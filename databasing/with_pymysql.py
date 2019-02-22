@@ -63,7 +63,7 @@ class Scraper:
         self.insert_to_db("dynamicdata", Scraper.STATIONS_PATH)
         print("successfully populated bikes")
         self._jcd_counter += 1
-        time.sleep(30)
+        time.sleep(5*60)
 
     def get_bike_json(self):
         while True:
