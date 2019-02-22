@@ -29,7 +29,7 @@ class Scraper:
 
     def __init__(self):
         self._jcd_counter = 1
-        self._weather_counter = 1
+        self._weather_counter = 0
         self._bike_json = []
         self.weather_json = []
 
@@ -66,16 +66,25 @@ class Scraper:
         time.sleep(30)
 
     def get_bike_json(self):
-        r = requests.get(Scraper.STATIONS_URL, params={"apiKey": Scraper.BIKE_APIKEY,"contract": Scraper.NAME})
-        print("bikes received")
-        self._bike_json = json.loads(r.text)
-        return self._bike_json
+        while True:
+            try: 
+                r = requests.get(Scraper.STATIONS_URL, params={"apiKey": Scraper.BIKE_APIKEY,"contract": Scraper.NAME})
+                print("bikes received")
+                self._bike_json = json.loads(r.text)
+                return self._bike_json
+            except: 
+                pass
+        
 
     def get_weather_json(self):
-        r = requests.get(Scraper.URL, params={"apikey": Scraper.WEATHER_APIKEY, "language": Scraper.LANGUAGE,"details": Scraper.DETAILS})
-        print("weather received")
-        self.weather_json = json.loads(r.text)
-        return self.weather_json
+        while True:
+            try:
+                r = requests.get(Scraper.URL, params={"apikey": Scraper.WEATHER_APIKEY, "language": Scraper.LANGUAGE,"details": Scraper.DETAILS})
+                print("weather received")
+                self.weather_json = json.loads(r.text)
+                return self.weather_json
+            except: 
+                pass
 
     def build_bike_csv(self, data, weather_time, download_counter):
 
