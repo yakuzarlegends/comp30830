@@ -4,7 +4,7 @@ import csv
 import json
 import calendar
 import private
-import MySQLdb
+import pymysql
 from datetime import datetime
 
 class Scraper:
@@ -112,7 +112,7 @@ class Scraper:
     
     def insert_to_db(self, tablename, filename):
         path = filename
-        cnx = MySQLdb.connect(host=Scraper.SQL_HOST, user=Scraper.SQL_USER, password=Scraper.PASSWORD,
+        cnx = pymysql.connect(host=Scraper.SQL_HOST, user=Scraper.SQL_USER, password=Scraper.PASSWORD,
                                 database='comp30830', local_infile=1)
         # opening the cursor    
         cursor = cnx.cursor()
@@ -123,8 +123,9 @@ class Scraper:
         IGNORE 1 LINES;
         """.format(filenamepath=path,tablename=tablename)
         cursor.execute(script)
-        cursor.close()
         cnx.commit()
+        cursor.close()
+        
         
         print("inserted!!")
 
