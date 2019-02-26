@@ -39,10 +39,10 @@ class Scraper:
         self.populate_weather()
         while True:
             time.sleep(1)
-            if self._jcd_counter % 12 == 0:
+            if self._jcd_counter == self._weather_counter * 12 + 1:
                 self._weather_counter += 1
                 self.populate_weather()
-            self.populate_bikes()
+        self.populate_bikes()   
         
     def build_static_data(self):
         self.insert_to_db("staticdata", Scraper.STATIC_PATH)
