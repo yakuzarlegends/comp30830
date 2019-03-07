@@ -1,5 +1,2 @@
-WeatherText,Temperature - Celcius,timestamp
-1,Cloudy,11.1,1550773800
-2,Cloudy,11.1,1550773800
-3,Cloudy,11.1,1550773800
-4,Cloudy,11.1,1550773800
+WeatherText,HasPrecip,PrecipType,IsDay,TempC,FRTempC,FRTempShadeC,RelatHum,DewPointC,WindDir,WindSpeedV,WindSpeedU,WindGustV,WindGustU,UVIndex,UVText,VisibilityV,VisibilityU,CloudCover,CeilingV,CeilingU,PressureV,PressureU,PressTendC,WindChillC,Precip1V,Precip1U,timestamp
+1,Mostly cloudy,False,,True,7.2,-0.6,-0.6,75,2.8,W,44.5,km/h,44.5,km/h,1,Low,16.1,km,88,640.0,m,990.0,mb,R,2.2,0.0,mm,1551957660
