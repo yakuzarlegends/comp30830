@@ -1,19 +1,22 @@
 from flask import Flask, render_template, jsonify
 import pymysql
 import json
-from Private import private
+import sys
+import os
 
-SQL_USER = private.raph_rds_user
-SQL_HOST = private.raph_rds_host
-PASSWORD = private.raph_rds_pw
+
+KIERAN_RDS_HOST = os.environ['KIERAN_RDS_HOST']
+KIERAN_RDS_USER = os.environ['KIERAN_RDS_USER']
+KIERAN_RDS_PW = os.environ['KIERAN_RDS_PW']
 
 app = Flask(__name__)
 
-connection = pymysql.connect(host=SQL_HOST,
-                             user=SQL_USER,
-                             password=PASSWORD,
-                             db='comp30830', cursorclass=pymysql.cursors.DictCursor)
 
+connection = pymysql.connect(host=KIERAN_RDS_HOST,
+                             user=KIERAN_RDS_USER,
+                             password=KIERAN_RDS_PW,
+                             db='comp30830', cursorclass=pymysql.cursors.DictCursor)
+print(sys.path)
 
 with connection.cursor() as cursor:
         # Read a single record
@@ -27,8 +30,7 @@ for i in range(len(stations)):
     current = stations[i]
     current["latitude"] = float(current["latitude"])
     current["longitude"] = float(current["longitude"])
-
-
+    
 
 @app.route("/")
 def hello():
