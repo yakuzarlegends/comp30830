@@ -1,8 +1,9 @@
 from flask import Flask, render_template, jsonify
-import pymysql
 import json
 import sys
 import os
+import pymysql
+
 
 
 KIERAN_RDS_HOST = os.environ['KIERAN_RDS_HOST']
@@ -19,11 +20,11 @@ connection = pymysql.connect(host=KIERAN_RDS_HOST,
 print(sys.path)
 
 with connection.cursor() as cursor:
-        # Read a single record
-        sql = "SELECT * FROM staticdata"
-        cursor.execute(sql)
-        stations = cursor.fetchall()
-        connection.close()
+    # Read a single record
+    sql = "SELECT * FROM staticdata"
+    cursor.execute(sql)
+    stations = cursor.fetchall()
+    connection.close()
 
 
 for i in range(len(stations)):
@@ -36,12 +37,20 @@ for i in range(len(stations)):
 def hello():
     return "Hello World!"
 
+@app.route("/stations/<int:number>")
+def one_station(number):
+    for i in range(len(stations)):
+        if stations[i]['number'] == number:
+            return jsonify(stations[i])  
+    return "Sorry, no station data"
+            
+
 @app.route("/name")
 def other():
     return render_template('home.html', stations=stations)
 
-@app.route('/api/static')
+@app.route('/api/static/')
 def coordinates():
     return jsonify(stations)
  
- app.run(host='0.0.0.0', port=5000) 
+app.run(host='0.0.0.0', port=5000) 
