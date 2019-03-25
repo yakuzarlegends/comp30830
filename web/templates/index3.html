@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en"> 
+  <head>
+    <title>Test Index</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      
+    <style>
+        .header{
+            color: white;
+            font-weight: 600;
+            height: 60px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 20pt;}
+        
+        #grad1 {
+            background-image: linear-gradient(to right, grey, Lightgrey, green, lime);}
+        #grad2 {
+            background-image: linear-gradient(to right, green, lime, grey, lightgrey);}
+        
+        .slidecontainer {
+            width: 100%;}
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px; 
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;}
+
+        .slider:hover {            
+            opacity: 1;}
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: #4CAF50;
+            cursor: pointer;}
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;}    
+        
+        /*#stationmap{
+            display:flex;}
+
+        #maponly{
+            display:block;} */
+        
+        .station{
+            border: 2px solid black; 
+            border-radius: 12px;
+            height:450px;
+            padding-left: 10px;}
+        
+        /* Always set the map height explicitly to define the size of the div element that contains the map. */
+        
+        #map{
+           border: 2px solid black; 
+            border-radius: 12px;
+            width:100%;
+            height:450px;}
+        
+        
+         #map2{
+            border: 2px solid black; 
+            border-radius: 12px;
+            width:100%;
+            height:450px;}
+        
+        html, body {
+            height: 100%;
+            margin:
+            padding: 0;}
+        
+        
+        i {
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;}
+
+        .left {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);}
+        
+        
+        
+        /* create an arrow that points right */
+        button.arrow-left {
+            width: 0; 
+	        height: 0; 
+	        border-bottom: 15px solid transparent;  /* left arrow slant */
+	        border-top: 15px solid transparent; /* right arrow slant */
+            border-right: 15px solid grey; /* bottom, add background color here */
+            border-left: solid transparent; /* bottom, add background color here */
+	        font-size: 0;
+            line-height: 0;}
+            
+
+        
+        .footer{
+            text-align: right;
+            width: 100%;
+            height: 40px;
+            padding-right: 10px;}
+        
+        
+    </style>
+      
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#time_dd" ).selectmenu();
+    </script>
+      
+      
+</head>
+<body>
+    
+   
+
+<div class="container-fluid">
+<!-- <div class="container"> need to decide which we prefer -->
+    
+<!-- Layout for the webpage header -->    
+    <div class=header id=grad2>
+        <div class="row">
+            <div class="col-sm-4" style="text-align:left;">
+                <p>Site Logo</p>
+            </div>
+            <div class="col-sm-4" style="text-align:center;">
+                <p>Dublin Bikes</p>
+            </div>
+            <div class="col-sm-4" style="text-align: right;">
+                <a>Dublin,Ireland &nbsp;&nbsp;&nbsp;<a/></a><a>Cloudy &nbsp;&nbsp;</a><a>13<sup>o</sup>C</a>
+            </div>
+        </div>
+    </div>
+    
+  
+    
+    <div class="row">
+        <div class="col-sm-4" style="text-align:left;">    
+            <div class="dropdown">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+    Choose Station</button>
+                <div class="dropdown-menu" >
+                   <!-- <a class="dropdown-item" href="#" value="StGreen" onchange="alert(this.value)">St Stephen's Green</a>-->
+                     <a class="dropdown-item" href="#">St Stephen's Green</a>
+                    <a class="dropdown-item" href="#">Fitzwilliam Square</a>
+                    <a class="dropdown-item" href="#">Leeson Park</a>
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3" style="text-align:left;">    
+            <div class="dropdown">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+                    Choose Day
+                </button>
+                <div class="dropdown-menu" id="weekday_dd"></div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="text-align:left;">    
+            <div class="dropdown">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+    Choose Time</button>
+               
+                <div class="dropdown-menu" id="time_dd">
+                     <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">  /* added */
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-2" style="text-align:left;">    
+        
+          <button type="button" class="btn btn-outline-secondary btn-sm" onclick = "chgScreen_from_submit()">Submit</button>           
+        </div>
+        
+    </div>
+    
+    
+ <!--Layout for station information and goggle map -->
+    <div class="row" id="stationmap">
+    <div class="col-sm-4">
+        <br>
+    <!-- Display the info for the selected station -->    
+        <div class="station">
+            <h3 style="text-align:center; text-decoration-line: underline" >Station Information</h3>
+            <p>Name: </p>
+            <p>Address: </p>
+            <p>Opening Hours:</p>
+            <p>Credit Card Machine: </p>    
+            <span style="float:right;"><button class="arrow-left" type="button" onclick = "chgScreen()" style="background:transparent" "outline=0"></button></span>
+            <p>Total Number of Bikes:</p>
+            <p>Status:</p>
+            <p>Day: </p>
+            <p>Time:</p>
+            <p>Bikes Available: </p>
+            <p>No. Free Stands: </p>
+        </div>
+    </div> 
+    <div class="col-sm-8">
+              <!-- Layout for range slider --> 
+             <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="50" class="slider" id=myrange>
+            </div>
+        <!-- display google map for bike stations -->
+            <div  class="mx-auto" id="map2" ></div>
+    </div>
+</div>  
+      
+  <!-- Layout for goggle map only-->        
+<!--<div class="row" id="maponly" style="display: flex">-->
+<div class="row" id="maponly">
+    <div class="col-sm-12">       
+        <!-- display google map for bike stations -->
+            <div  class="mx-auto" id="map" ></div>
+    </div> 
+      
+    
+  </div>
+    <!--Page Footer containing copyright-->
+    <footer class="footer" id=grad1>
+            <p><b>&copy; YaKuzaR Legends 2019</b></p>  
+    </footer>
+
+    
+    
+    
+</div>
+    
+   
+    <script>
+    var first_time = "yes";
+    var myLatLng = {lat: 53.35676900, lng: -6.26814000};
+        
+        
+        
+     function chgScreen_from_submit()
+        {
+        if (first_time == "yes")
+            // create map for station screen first time ouput
+            {
+            var map2 = new google.maps.Map(document.getElementById('map2'), {
+                    zoom: 13,
+                    center: myLatLng
+              }); 
+
+            var marker, i;
+
+            for (i = 0; i < locations.length; i++) 
+                {  
+                marker = new google.maps.Marker({
+                                                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                                                map: map2
+                                                 });
+
+                google.maps.event.addListener(marker, 'click', (function(marker, i) 
+                    {
+                    return function() 
+                        {
+                        infowindow.setContent(locations[i][0]);
+                        infowindow.open(map2, marker);
+                        }
+                    })(marker, i));
+
+                };
+            first_time = "no";
+            }
+
+            
+        if (document.getElementById("stationmap").style.display == 'none')
+            {
+            document.getElementById("maponly").style.display = 'none';
+            document.getElementById("stationmap").style.display = 'flex';
+            }
+        else
+            {
+            document.getElementById("maponly").style.display = 'block';
+            document.getElementById("stationmap").style.display = 'none';
+            }
+            
+        }
+    
+        
+     function chgScreen() {
+        
+        document.getElementById("stationmap").style.display = 'none'; 
+        document.getElementById("maponly").style.display = 'block'; 
+   
+     
+     }
+
+    var locations = [
+      ['BLESSINGTON STREET', 53.35676900, -6.26814000, 4],
+      ['BOLTON STREET', 53.35118200, -6.26985900, 5],
+      ['GREEK STREET', 53.34687400, -6.27297600, 3],
+      ['CHARLEMONT PLACE', 53.33066200, 153.33066200, 2],
+      ['CHRISTCHURCH PLACE', 53.34336800, -6.27012000, 1]
+    ];
+        
+      function weekday_dd()
+        // create weekday dropdown
+        {
+        var alist = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]; 
+        var str = "";
+        for (var i=0;i<alist.length;++i)
+            {
+            str = str + '<a class="dropdown-item" href="#">' + alist[i] + '</a>';
+            // what to do on selection    
+            //str = str + '<a class="dropdown-item" href="#" value="' + alist[i] + '" onchange="alert(this.value)">' + alist[i] + '</a>';
+            }
+        document.getElementById("weekday_dd").innerHTML = str
+        }
+        
+        function time_dd()
+        // create time dropdown
+        {
+        var alist = ["05.00", "05.30", "06.00", "06.30", "07.00", "07.30","08.00", "08.30", "09.00", "09.30", "10.00", "10.30",
+                    "11.00", "11.30", "12.00", "12.30", "13.00", "13.30","14.00", "14.30", "15.00", "15.30", "16.00", "16.30",
+                    "17.00", "17.30", "18.00", "18.30", "19.00", "19.30","20.00", "20.30", "21.00", "21.30", "22.00", "22.30",
+                    "23.00", "23.30", "00.00", "00.30"]; 
+        var str = "";
+        for (var i=0;i<alist.length;++i)
+            {
+            str = str + '<a class="dropdown-item" href="#">' + alist[i] + '</a>';
+            }
+            
+        document.getElementById("time_dd").innerHTML = str
+        }
+
+      function initMap() 
+        //creates inital screen map, populates  
+        {
+         // populate the weekday and time dropdown
+        var dropD2 = weekday_dd()
+        var dropD3 = time_dd()
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: myLatLng
+        });
+          
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+
+        for (i = 0; i < locations.length; i++) 
+            {  
+            marker = new google.maps.Marker({
+                                            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                                            map: map
+                                            });
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) 
+                {
+                return function() 
+                    {
+                    infowindow.setContent(locations[i][0]);
+                    infowindow.open(map, marker);
+                    }
+                })(marker, i));
+
+            };
+        
+          document.getElementById("stationmap").style.display = 'none';
+          document.getElementById("maponly").style.display = 'block';
+        }
+        
+    
+    </script>
+
+    
+
+    <!-- Key for accessing googlemaps -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVkBL5SsC_90fa4OjlrDmjqi5zh8IGx8E&callback=initMap">
+    </script>    
+</body>
+</html>
+
+
