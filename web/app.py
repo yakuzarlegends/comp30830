@@ -46,8 +46,20 @@ def one_station(number):
             
 
 @app.route("/name")
-def other():
-    return render_template('home.html', stations=stations)
+def name():
+    return render_template('raph_home.html', stations=stations)
+
+@app.route("/mapscrn")
+def map():
+    return render_template('mapscrn.html')
+
+@app.route("/index/3")
+def index3():
+    return render_template('index3.html')
+
+@app.route("/index")
+def indexer():
+    return render_template('index.html')
 
 @app.route('/api/static/')
 def coordinates():
