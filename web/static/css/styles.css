@@ -1,7 +1,7 @@
-#map {
+/* #map {
     width: 100%;
     height: 500px !important;
-}
+} */
 
 /* Optional: Makes the sample page fill the window. */
 html,
@@ -10,3 +10,113 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.header{
+    color: white;
+    font-weight: 600;
+    height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20pt;}
+
+#grad1 {
+    background-image: linear-gradient(to right, grey, Lightgrey, green, lime);}
+#grad2 {
+    background-image: linear-gradient(to right, green, lime, grey, lightgrey);}
+
+.slidecontainer {
+    width: 100%;}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px; 
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;}
+
+.slider:hover {            
+    opacity: 1;}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #4CAF50;
+    cursor: pointer;}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;}    
+
+/*#stationmap{
+    display:flex;}
+
+#maponly{
+    display:block;} */
+
+.station{
+    border: 2px solid black; 
+    border-radius: 12px;
+    height:450px;
+    padding-left: 10px;}
+
+/* Always set the map height explicitly to define the size of the div element that contains the map. */
+
+#map{
+   border: 2px solid black; 
+    border-radius: 12px;
+    width:100%;
+    height:450px;}
+
+
+ #map2{
+    border: 2px solid black; 
+    border-radius: 12px;
+    width:100%;
+    height:450px;}
+
+html, body {
+    height: 100%;
+    margin:
+    padding: 0;}
+
+
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);}
+
+
+
+/* create an arrow that points right */
+button.arrow-left {
+    width: 0; 
+    height: 0; 
+    border-bottom: 15px solid transparent;  /* left arrow slant */
+    border-top: 15px solid transparent; /* right arrow slant */
+    border-right: 15px solid grey; /* bottom, add background color here */
+    border-left: solid transparent; /* bottom, add background color here */
+    font-size: 0;
+    line-height: 0;}
+    
+
+
+.footer{
+    text-align: right;
+    width: 100%;
+    height: 40px;
+    padding-right: 10px;}
