@@ -1,7 +1,5 @@
 $(function () {
-            $("#time_dd").selectmenu();
-
-
+           
             var first_time = "yes";
             var myLatLng = {
                 lat: 53.35676900,
