@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"> 
-  <head>
+<html lang="en">
+
+<head>
     <title>Test Index</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,100 +10,116 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../static/css/styles.css">
-      
-      
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 </head>
-<body>
-    
-   
 
-<div class="container-fluid">
-<!-- <div class="container"> need to decide which we prefer -->
-    
-<!-- Layout for the webpage header -->    
-    <div class=header id=grad2>
-        <div class="row">
-            <div class="col-sm-4" style="text-align:left;">
-                <p>Site Logo</p>
+<body class="menu-active">
+
+
+
+    <div>
+
+       
+            <!-- <div class="container"> need to decide which we prefer -->
+
+            <!-- Layout for the webpage header -->
+            <div class=header id=grad2>
+                <div class="row">
+                    <div class="col-sm-4" style="text-align:left;">
+                        <p>Site Logo </p>
+                    </div>
+                    <div class="col-sm-4" style="text-align:center;">
+                        <p>Dublin Bikes</p>
+                    </div>
+                    <div class="col-sm-4" style="text-align: right;">
+                        <a>Dublin, Ireland &nbsp;&nbsp;&nbsp;<a /></a><a>Cloudy &nbsp;&nbsp;</a><a>13<sup>o</sup>C</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-4" style="text-align:center;">
-                <p>Dublin Bikes</p>
+
+
+
+            <div class="row">
+                <div class="col-sm-4" style="text-align:left;" id="station_dd"></div>
+                <div class="col-sm-3" style="text-align:left;" id="weekday_dd"></div>
+                <div class="col-sm-3" style="text-align:left;" id="time_dd"></div>
+
+                
+
             </div>
-            <div class="col-sm-4" style="text-align: right;">
-                <a>Dublin, Ireland &nbsp;&nbsp;&nbsp;<a/></a><a>Cloudy &nbsp;&nbsp;</a><a>13<sup>o</sup>C</a>
+
+            <div class="relative main-section">
+                <div id="map" class="map-container absolute"></div>
+                <div class="slide-in-menu absolute">
+                    <div class="slide-rel relative">
+                        <div class="slide-rel__inner" id="slide-in-content">
+                            <h1><span id="station-title">St Stephen's Green</span></h1>
+                            <p>Opening Hours:</p>
+                            <p>Credit Card Machine: </p>
+                          
+                            <p>Total Number of Bikes:</p>
+                            <p>Bikes Available: </p>
+                            <p>No. Free Stands: </p>
+                        </div>
+                        <button class="minimiser absolute">
+                            <div class="arrow top"></div>
+                            <div class="arrow bottom"></div>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    
-  
-    
-    <div class="row">
-        <div class="col-sm-4" style="text-align:left;" id="station_dd"></div> 
-        <div class="col-sm-3" style="text-align:left;" id="weekday_dd"></div>
-        <div class="col-sm-3" style="text-align:left;" id="time_dd"></div>
+
+
+
+            <!--Layout for station information and goggle map -->
+
+            
+                <!-- <div class="row relative" id="stationmap">
+                    <div id="slide-in absolute"> -->
+                        <!-- Display the info for the selected station -->
+                        <!-- <div class="station">
+                            <h3 style="text-align:center; text-decoration-line: underline">Station Information</h3>
+                            <p>Name: </p>
+                            <p>Address: </p>
+                            <p>Opening Hours:</p>
+                            <p>Credit Card Machine: </p>
+                            <span style="float:right;"><button class="arrow-left" type="button" onclick="chgScreen()"
+                                    style="background:transparent" "outline=0"></button></span>
+                            <p>Total Number of Bikes:</p>
+                            <p>Status:</p>
+                            <p>Day: </p>
+                            <p>Time:</p>
+                            <p>Bikes Available: </p>
+                            <p>No. Free Stands: </p>
+                        </div> -->
+                    <!-- </div>
+                    <div class="col-sm-12 absolute" id="map-container"> -->
+                        <!-- display google map for bike stations -->
+                        <!-- <div class="mx-auto" id="map"></div>
+                    </div>
+
+                </div> -->
+
+                <!-- Layout for goggle map only-->
+                <!--<div class="row" id="maponly" style="display: flex">-->
+            
+
+            <!--Page Footer containing copyright-->
+            <footer class="footer" id=grad1>
+                <p><b>&copy; YaKuzaR Legends 2019</b></p>
+            </footer>
+
+
+
+        <script>
+            var stations = {{ stations | tojson }}
+            var dynamic = {{ dynamic | tojson }}
+        </script>
+        <script src="../static/js/key.js"></script>
+        <script src="../static/js/yvette_index.js"></script>
         
-        <div class="col-sm-2" style="text-align:left;">    
-          <button type="button" class="btn btn-outline-secondary btn-sm" onclick = "chgScreen_from_submit()">Submit</button>           
-        </div>
-        
-    </div>
-    
-    
- <!--Layout for station information and goggle map -->
-    <div class="row" id="stationmap">
-    <div class="col-sm-4">
-        <br>
-    <!-- Display the info for the selected station -->    
-        <div class="station">
-            <h3 style="text-align:center; text-decoration-line: underline" >Station Information</h3>
-            <p>Name: </p>
-            <p>Address: </p>
-            <p>Opening Hours:</p>
-            <p>Credit Card Machine: </p>    
-            <span style="float:right;"><button class="arrow-left" type="button" onclick = "chgScreen()" style="background:transparent" "outline=0"></button></span>
-            <p>Total Number of Bikes:</p>
-            <p>Status:</p>
-            <p>Day: </p>
-            <p>Time:</p>
-            <p>Bikes Available: </p>
-            <p>No. Free Stands: </p>
-        </div>
-    </div> 
-    <div class="col-sm-8">
-              <!-- Layout for range slider --> 
-             <div class="slidecontainer">
-                <input type="range" min="1" max="100" value="50" class="slider" id=myrange>
-            </div>
-        <!-- display google map for bike stations -->
-            <div  class="mx-auto" id="map2" ></div>
-    </div>
-</div>  
-      
-  <!-- Layout for goggle map only-->        
-<!--<div class="row" id="maponly" style="display: flex">-->
-<div class="row" id="maponly">
-    <div class="col-sm-12">       
-        <!-- display google map for bike stations -->
-            <div  class="mx-auto" id="map" ></div>
-    </div> 
-      
-    
-  </div>
-    <!--Page Footer containing copyright-->
-    <footer class="footer" id=grad1>
-            <p><b>&copy; YaKuzaR Legends 2019</b></p>  
-    </footer> 
-    
-</div>
-    
-<script src="../static/js/yvette_index.js"></script>
-    <!-- Key for accessing googlemaps -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVkBL5SsC_90fa4OjlrDmjqi5zh8IGx8E&callback=initMap">
-</script>    
 </body>
+
 </html>
-
-

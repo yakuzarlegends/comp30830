@@ -4,20 +4,189 @@
 } */
 
 /* Optional: Makes the sample page fill the window. */
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+
+:root {
+    --lightBorder: rgba(120, 130, 134, 0.5);
+    --font32: 32px;
+    --mainGrey: rgb(120, 130, 134);
+    --mainGreyDark: rgb(61, 66, 68);
+    --mainBlue: #3CA0CC;
+    --veryLight: rgba(231, 231, 231, 0.575);
 }
 
-.header{
-    color: white;
-    font-weight: 600;
-    height: 60px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 20pt;}
+
+
+html,
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+
+}
+
+html { 
+    font-size: 62.5%;
+}
+
+body {
+    position: relative;
+}
+
+input:focus, textarea { outline: none ! important; }
+
+input::placeholder {
+    color: var(--lightBorder);
+}
+
+input:focus { color: var(--mainGrey);
+ }
+
+header {
+    display: flex;
+    height: 9rem;
+    width: 100%;
+    border-bottom: 1px solid var(--lightBorder);
+    -webkit-box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+    -moz-box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+    box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+ 
+    
+}
+.search-container {
+    text-align: center;
+    
+    height: 7rem;
+    display: flex;
+    align-items: center;
+}
+
+#svgimage g {
+    fill: var(--lightBorder);
+    height: 10rem;
+}
+
+.inlinepara {
+    font-style: italic;
+    color: var(--mainBlue);
+}
+.section1 {
+    text-align: center;
+}
+
+#svgimage{
+    height: 4rem;
+    width: 4rem;
+}
+
+.svg-container {
+    display: inline-block;
+    margin-right: 1rem;
+  
+}
+.select-container {
+    display: inline-block;
+    border-radius: 20px;
+    transition: all .2s;
+    border: 1px solid var(--mainGrey);
+    width: calc(50% - 1rem);
+    text-align-last: center;
+    
+}
+
+.first-select {
+    margin-right: 1rem;
+}
+
+.select-container:focus {
+    outline: none !important;
+}
+
+.select-container select {
+    background: transparent;
+    -webkit-appearance: button;
+    padding: 0 1rem;
+    outline: none;
+    height: 4rem;
+    border: none;
+    font-size: 16px;
+   
+    
+}
+.select-container:hover{
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    
+
+}
+
+
+
+.pac-icon {
+    display: none;
+
+}
+
+.pac-item-query {
+    color: var(--mainBlue);
+    font-size: 1.5rem;
+}
+
+.pac-item {
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+}
+
+.search-station-container {
+    height: 100%;
+    padding: 1rem;
+    width: 52rem;
+
+}
+
+.search-station-input {
+    
+    height: 100%;
+    font-size: 18px;
+    border: none;
+    color: var(--mainGrey);
+    width: 100%;
+    
+}
+
+#logo {
+    height: 30rem;
+    width: 30rem;
+}
+
+.header-col {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
+.logo {
+    max-width: 40rem;
+}
+
+.header-col:not(:first-child){
+    border-left: 1px solid var(--lightBorder);
+}
+
+select {
+     
+     border: none;
+     padding: 1rem;
+}
+
+
+.larger {
+    max-width: 70rem;
+}
+
 
 #grad1 {
     background-image: linear-gradient(to right, grey, Lightgrey, green, lime);}
@@ -47,7 +216,8 @@ body {
     width: 25px;
     height: 25px;
     border-radius: 50%; 
-    background: #4CAF50;
+    /* background: #4CAF50; */
+    background:red;
     cursor: pointer;}
 
 .slider::-moz-range-thumb {
@@ -71,11 +241,9 @@ body {
 
 /* Always set the map height explicitly to define the size of the div element that contains the map. */
 
-#map{
-   border: 2px solid black; 
-    border-radius: 12px;
-    width:100%;
-    height:450px;}
+#map {
+    height: calc(100vh - 90px);
+}
 
 
  #map2{
@@ -84,10 +252,13 @@ body {
     width:100%;
     height:450px;}
 
-html, body {
-    height: 100%;
-    margin:
-    padding: 0;}
+
+.markertag {
+    font-size: 16px;
+    font-weight: 300;
+    
+}
+
 
 
 i {
@@ -103,15 +274,7 @@ i {
 
 
 /* create an arrow that points right */
-button.arrow-left {
-    width: 0; 
-    height: 0; 
-    border-bottom: 15px solid transparent;  /* left arrow slant */
-    border-top: 15px solid transparent; /* right arrow slant */
-    border-right: 15px solid grey; /* bottom, add background color here */
-    border-left: solid transparent; /* bottom, add background color here */
-    font-size: 0;
-    line-height: 0;}
+
     
 
 
@@ -119,4 +282,192 @@ button.arrow-left {
     text-align: right;
     width: 100%;
     height: 40px;
-    padding-right: 10px;}
+    padding-right: 10px;
+}
+
+ /* 
+ 
+ This is for making the slide in larger
+ */
+
+#slide-in {
+    transition: all .3s ease-in;
+  
+}
+
+#main-info {
+    width: 100% !important;
+}
+
+.main-section {
+    height: 90vh;
+    width: 100%;
+
+
+}
+.map-container {
+    width: 100%;
+    height: 100%;
+}
+
+.slide-in-menu {
+    width: 48rem;
+    height: 90%;
+    background: white;
+    left: 0;
+    top: 50%;
+    transform: translate(-95%, -50%);
+    transition: transform .3s ease-out;
+    -webkit-box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+-moz-box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+box-shadow: 0px 0px 29px -19px rgba(0,0,0,0.76);
+}
+
+button.gm-ui-hover-effect {
+    display: none !important;
+}
+
+p, label {
+    font-size: 1.8rem;
+}
+
+.button-section {
+    position: relative;
+    height: 2rem;
+}
+
+.button-section .down-button {
+    cursor: default;
+    left: 50%;
+    transform: translateY(-2rem) translateX(-50%) rotate(270deg);
+} 
+
+
+label:focus {
+    outline:0;
+}
+.slide-rel {
+    height: 100%;
+    width: 100%;
+    padding: 4rem 4rem;
+    color: var(--mainGreyDark);
+    
+}
+
+#dayspan {
+    color: var(--mainBlue);
+    font-size: 2.4rem;
+}
+
+.chart-div {
+    width: 200%;
+    height: 40rem;
+    border: 1px solid black;
+    margin-top: 2rem;
+ 
+}
+
+.typical-header {
+    font-size: 2.4rem;
+    margin-top: 6rem;
+}
+.information-sections {
+    height: 45rem;
+    overflow: scroll;
+    padding: 0 3rem;
+}
+
+.slide-rel__inner {
+    height: 100%;
+    margin: 0 auto;
+    
+}
+
+.station-title, .current-title {
+    text-align: center;
+    font-size: var(--font32);
+    padding-bottom: 1rem;
+    color: var(--mainGreyDark);
+}
+
+.section2 {
+    margin-top: 4rem;
+    
+}
+
+.selects {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.current-title {
+    font-size: 28px;
+}
+
+.subtitle-line.current {
+    background: var(--lightBorder);
+    width: 50%;
+    margin: 0 auto 2rem auto;
+
+}
+
+.subtitle-line {
+    height: 1px;
+    width: 100%;
+    background: var(--lightBorder);
+    margin-bottom: 2rem;
+}
+
+
+
+.minimiser, .down-button {
+    height: 60px;
+    width: 40px;
+    background: white;
+    border: 0;
+    right: -40px;
+    top: 0;
+    outline: none;
+}
+
+#arrow {
+    height: 5rem;
+    width: 5rem;
+    margin-left: -1.3rem;
+    opacity: 0.5;
+    fill: var(--mainGreyDark);
+    transition: opacity .3s ease-out;
+}
+
+.minimiser #arrow:hover {
+    opacity: 1;
+}
+
+
+
+button:focus {outline:0;}
+
+.menu-active .slide-in-menu {
+    transform: translate(0, -50%);
+}
+
+.menu-active #arrow {
+    transform: rotate(180deg);
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+#stationform {
+    height: 100%;
+}
+
+label:focus {
+    outline: none ! important;
+}
+

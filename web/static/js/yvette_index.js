@@ -1,143 +1,307 @@
-$(function () {
-           
-            var first_time = "yes";
-            var myLatLng = {
-                lat: 53.35676900,
-                lng: -6.26814000
-            };
+var map;
 
-            var locations = [
-                ['BLESSINGTON STREET', 53.35676900, -6.26814000, 4],
-                ['BOLTON STREET', 53.35118200, -6.26985900, 5],
-                ['GREEK STREET', 53.34687400, -6.27297600, 3],
-                ['CHARLEMONT PLACE', 53.33066200, 153.33066200, 2],
-                ['CHRISTCHURCH PLACE', 53.34336800, -6.27012000, 1]
-            ];
+console.log(stations);
 
 
-            function chgScreen_from_submit() {
-                if (first_time == "yes")
-                // create map for station screen first time ouput
-                {
-                    var map2 = new google.maps.Map(document.getElementById('map2'), {
-                        zoom: 13,
-                        center: myLatLng
-                    });
+console.log(stations[30].latitude);
 
-                    var marker, i;
+var myLatLng = {
+    lat: parseFloat(stations[30].latitude),
+    lng: parseFloat(stations[30].longitude)
+};
 
-                    for (i = 0; i < locations.length; i++) {
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                            map: map2
-                        });
 
-                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                            return function () {
-                                infowindow.setContent(locations[i][0]);
-                                infowindow.open(map2, marker);
-                            }
-                        })(marker, i));
+var slideIn = document.getElementById("slide-in");
+var mapContainer = document.getElementById("map-container");
+var minimiser = document.querySelector(".minimiser");
+var title = document.querySelector(".station-title");
+var content = document.getElementById("slide-in-content");
+var totalstands = document.getElementById("totalstands");
+var creditcard = document.getElementById("creditcard");
+var input = document.getElementById('search-bar');
+var infoSections = document.querySelector('.information-sections');
+var downbutton = document.querySelector('.down-button');
+var typheader = document.querySelector('.typical-header');
 
-                    };
-                    first_time = "no";
+var markers = [];
+
+var loc;
+
+function pinClick(number) {
+    scrollToTop();
+    loc = locations[number];
+    title.innerHTML = loc.address;
+    totalstands.innerHTML = loc.totalBikeStands;
+    if (loc.banking === "True"){
+        creditcard.innerHTML = "This station accepts card payments."
+        creditcard.style.color = '#4DAF40'
+    } else {
+        creditcard.innerHTML = "This station does not accept card payments.";
+        creditcard.style.color = '#E26464'
+    }
+   
+}
+
+
+// function selectChange(el) {
+//     alert(loc);
+// }
+
+
+function scrollToTop() {
+    infoSections.scrollTop = 0;
+    downbutton.style.display = 'static';
+}
+
+function removeScroll(){
+    infoSections.addEventListener('scroll', function(){
+        downbutton.style.display = 'none';
+        typheader.style.marginTop = '0rem';
+    })
+}
+
+removeScroll();
+
+function buttonClick() {
+    document.body.classList.toggle("menu-active");
+    hideAllMarkers(map);
+}
+
+minimiser.addEventListener("click", buttonClick);
+
+function updateShownData(data) {
+    console.log(data);
+    title.textContent = data.name;
+}
+
+var locations = {};
+
+var DUBLIN = {
+    lat: 53.35,
+    lng: -6.27
+};
+
+var BOUNDS = {
+    north: 53.375340,
+    south: 53.318013,
+    west: -6.345040,
+    east: -6.161072
+}
+
+function searchSubmit(e){
+    e.preventDefault(); 
+    input.value = "";
+    return false;
+}
+
+function initMap() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center:myLatLng,
+        disableDefaultUI: true,
+        mapTypeId: 'roadmap',
+        styles: [{
+            featureType: 'poi.business',
+            stylers: [{
+                visibility: 'off'
+            }]
+        }, 
+        {
+            featureType: 'poi.attraction',
+            stylers: [{
+                visibility: 'off'
+            }]
+        },   
+    ],
+      restriction: {
+             latLngBounds: BOUNDS
+        }
+    });
+
+    var DublinBounds = [
+        new google.maps.LatLng(53.375340, -6.345040),
+        new google.maps.LatLng( 53.318013, -6.345040),
+        new google.maps.LatLng( 53.318013, -6.161072),
+        new google.maps.LatLng( 53.375340, -6.161072),
+        new google.maps.LatLng(53.375340, -6.345040)
+    ]
+
+    var DublinArea = new google.maps.Polygon({paths: DublinBounds});
+
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(53.318013,-6.345040),
+        new google.maps.LatLng(53.375340,-6.161072));
+
+    var input = document.getElementById('search-bar');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.setFields(
+        ['address_components', 'geometry', 'icon', 'name']);
+
+    autocomplete.bindTo('bounds', map);
+
+
+    
+
+    autocomplete.addListener('place_changed', function() {
+        
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            var request = {
+                query: input.value,
+                fields: ['name', 'geometry'],
+                locationBias: defaultBounds
+              };
+      
+              service = new google.maps.places.PlacesService(map);
+
+              service.findPlaceFromQuery(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, DublinArea)){
+                        map.panTo(results[0].geometry.location);
+                    } else {
+                        map.panTo(myLatLng);
+                    }
                 }
-
-
-                if (document.getElementById("stationmap").style.display == 'none') {
-                    document.getElementById("maponly").style.display = 'none';
-                    document.getElementById("stationmap").style.display = 'flex';
-                } else {
-                    document.getElementById("maponly").style.display = 'none';
-                    document.getElementById("stationmap").style.display = 'flex';
-                }
-
-            }
-
-
-            function chgScreen() {
-
-                document.getElementById("stationmap").style.display = 'none';
-                document.getElementById("maponly").style.display = 'block';
-
-
-            }
-
-            function station_dd() {
-                var blist = ['St Stephens Green', 'Fitzwilliam Square', 'Leeson Park'];
-                var str = '<select><option value="0" selected="selected">Choose Station</option>';
-                // to process a station being selected  change to this
-                //var str = '<select><option value="0" selected="selected" onchange="chg_station(this.value)">Choose Station</option>';
-                for (var i = 0; i < blist.length; ++i) {
-                    str = str + '<option value="' + blist[i] + '">' + blist[i] + '</option>';
-                }
-                str = str + '</select>';
-                document.getElementById("station_dd").innerHTML = str
-            }
-
-            function weekday_dd() {
-            // create weekday dropdown
-                var alist = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-                var str = '<select><option value="0" selected="selected">Choose Weekday</option>';
-                // to process a weekday being selected change to this  
-                // var str = '<select><option value="0" selected="selected" onchange="chg_weekday(this.value)">Choose Weekday</option>';    
-                for (var i = 0; i < alist.length; ++i) {
-                    str = str + '<option value="' + alist[i] + '">' + alist[i] + '</option>';
-                }
-                str = str + '</select>';
-                document.getElementById("weekday_dd").innerHTML = str
-            }
-
-            function time_dd() {
-                var alist = ["05.00", "05.30", "06.00", "06.30", "07.00", "07.30", "08.00", "08.30", "09.00", "09.30", "10.00", "10.30",
-                    "11.00", "11.30", "12.00", "12.30", "13.00", "13.30", "14.00", "14.30", "15.00", "15.30", "16.00", "16.30",
-                    "17.00", "17.30", "18.00", "18.30", "19.00", "19.30", "20.00", "20.30", "21.00", "21.30", "22.00", "22.30",
-                    "23.00", "23.30", "00.00", "00.30"
-                ];
-
-                var str = '<select><option value="0" selected="selected">Choose Time</option>';
-                // to process a time being selected  change to this
-                //var str = '<select><option value="0" selected="selected" onchange="chg_TIME(this.value)">Choose Time</option>';
-                for (var i = 0; i < alist.length; ++i) {
-                    str = str + '<option value="' + alist[i] + '">' + alist[i] + '</option>';
-                }
-                str = str + '</select>';
-                document.getElementById("time_dd").innerHTML = str
-            }
-
-            function initMap() {
-                //creates inital screen map, populates dropdowns 
-                // populate the station, weekday and time dropdown
-                var dropD1 = station_dd();
-                var dropD2 = weekday_dd();
-                var dropD3 = time_dd();
-
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 13,
-                    center: myLatLng
-                });
-
-
-                var infowindow = new google.maps.InfoWindow();
-
-                var marker, i;
-
-                for (i = 0; i < locations.length; i++) {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                        map: map
-                    });
-
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            infowindow.setContent(locations[i][0]);
-                            infowindow.open(map, marker);
-                        }
-                    })(marker, i));
-
-                };
-
-                document.getElementById("stationmap").style.display = 'none';
-                document.getElementById("maponly").style.display = 'block';
+              });
             
-}});
+          } else if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+            } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);  // Why 17? Because it looks good.
+            }
+        
+        
+
+    });
+
+
+    // var request = {
+    //     query: input.innerText
+    //   };
+
+    // var service = new google.maps.places.PlacesService(map);
+
+
+    // service.findPlaceFromQuery(request, function(results, status) {
+    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //       map.setCenter(results[0].geometry.location);
+    //     }
+    //   });
+
+    var l = stations.length;
+    for (i = 0; i < l; i++) {
+
+        locations[stations[i].number] = {
+            position: {
+                lat: parseFloat(stations[i].latitude),
+                lng: parseFloat(stations[i].longitude)
+            },
+            title: stations[i].name,
+            address: stations[i].address,
+            number: stations[i].number,
+            availableBikeStands: dynamic[i].available_bike_stands,
+            availableBikes: dynamic[i].available_bikes,
+            banking: dynamic[i].banking,
+            bonus: dynamic[i].bonus,
+            status: dynamic[i].status,
+            totalBikeStands: dynamic[i].total_bike_stands
+        };
+    }
+
+
+
+    Object.keys(locations).forEach(function (feature) {
+
+        var infowindow = new google.maps.InfoWindow({
+            content: "<h3 class='markertag'>" + locations[feature].address + "</h3>"
+        });
+
+        var marker = new google.maps.Marker({
+            position: locations[feature].position,
+            title: locations[feature].title,
+            number: locations[feature].number,
+            map: map,
+            infowindow: infowindow,
+            icon: {
+                url: "/static/images/bike_icon.png",
+                scaledSize: new google.maps.Size(50, 50)
+            }
+        });
+
+        markers.push(marker);
+
+
+
+
+        marker.addListener('click', function () {
+            hideAllMarkers(map);
+            this.infowindow.open(map, this);
+            map.panTo(this.position);
+            document.body.classList.add("menu-active");
+            pinClick(this.number);
+
+            // this.icon = {
+            //     url: "/static/images/bike_icon.png"
+            // }
+            // raph work out how to do this
+        });
+    });
+    loc = locations[33];
+    pinClick(33);
+
+}
+
+
+function hideAllMarkers(map) {
+    markers.forEach(function (marker) {
+        marker.infowindow.close(map, marker);
+    })
+}
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', "13:00", '14:00'],
+        datasets: [{
+            label: '# of bikes available',
+            data: [12, 19, 3, 5, 2, 3,5,6,7,8],
+            backgroundColor: [
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff',
+                '#fff'
+            ],
+            borderColor: [
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC',
+                '#3CA0CC'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
