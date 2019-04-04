@@ -4,7 +4,8 @@ import sys
 import os
 import pymysql
 from helpers.sql_query import sequeler 
-import datetime
+from datetime import datetime
+
 
 
 
@@ -30,10 +31,13 @@ app = Flask(__name__)
 #     connection.close()
 
 
-data = sequeler.collectData(["SELECT * FROM staticdata", "SELECT * FROM dynamicdata WHERE download_number = (SELECT MAX(download_number) FROM dynamicdata)"])
+data = sequeler.collectData(["SELECT * FROM staticdata", "SELECT * FROM dynamicdata WHERE download_number = (SELECT MAX(download_number) FROM dynamicdata)", "SELECT * FROM weatherdata WHERE id = (SELECT MAX(id) FROM weatherdata)"])
 # dynamic = sequeler.collectData("SELECT * FROM dynamicdata WHERE download_number = (SELECT MAX(download_number) FROM dynamicdata);")
 stations = data[0]
 dynamic = data[1]
+weather = data[2]
+
+
 
 for i in range(len(stations)):
     current = stations[i]
@@ -45,13 +49,28 @@ for i in range(len(dynamic)):
     current = dynamic[i]
     timestamp = current["timestamp"] // 1000
     current["timestamp"] = timestamp
-    
+
+temperature = float(weather[0]['tempc'])
+description = weather[0]['weather_text']
+current_time = weather[0]['timestamp']
+
+current_date = datetime.utcfromtimestamp(current_time).strftime("%A %d %B %Y")
+current_time = datetime.utcfromtimestamp(current_time).strftime("%H:%M")
+
 
 dynamicdata = []
 for i in range(len(dynamic)):
     dynamicdata.append(dynamic[i])
 
 # print(dynamicdata)
+
+weather = {
+    'temperature': temperature,
+    'description': description
+}
+
+
+
   
 
 # RAPH: use this sql query to get the most recent dynamicdata
@@ -103,7 +122,7 @@ def coordinates():
 
 @app.route('/mock')
 def mock():
-    return render_template('mockup.html', stations=stations, dynamic=dynamicdata)
+    return render_template('mockup.html', stations=stations, dynamic=dynamicdata, weather=weather)
 
 @app.route('/api/dynamic/')
 def dynamic():
