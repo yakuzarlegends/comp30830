@@ -2,13 +2,37 @@ var map;
 
 
 console.log(weather)
-
 console.log(stations[30].latitude);
 
 var myLatLng = {
     lat: parseFloat(stations[30].latitude),
     lng: parseFloat(stations[30].longitude)
 };
+
+current_station = stations[30].number
+console.log(current_station)
+function selectChange(the_object, other_object){
+    fetch("/mock/predict", {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"weekday": the_object.value, "hour": other_object.value, "station_id": current_station})
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        console.log(data.prediction)
+    });
+        
+
+
+}
+
+
+
+
 
 
 var slideIn = document.getElementById("slide-in");
@@ -60,6 +84,7 @@ var weatherDescriptions = {
     "mostly clear": "night",
     "partly cloudy": "night",
     "hazy moonlight": "night",
+    "drizzle": "cloud_rain"
     
 }
 
@@ -98,7 +123,7 @@ function pinClick(number) {
     loc = locations[number];
     map.setZoom(16);
     map.panTo(loc.position);
-    
+    current_station = loc.number
     title.innerHTML = loc.address;
     totalstands.innerHTML = loc.totalBikeStands;
     if (loc.banking === "True"){
@@ -221,7 +246,8 @@ function initMap() {
                 fields: ['name', 'geometry'],
                 locationBias: defaultBounds
               };
-      
+              
+              
               service = new google.maps.places.PlacesService(map);
 
               service.findPlaceFromQuery(request, function(results, status) {
@@ -233,6 +259,7 @@ function initMap() {
                         hideAllMarkers()
                         input.value = "";
                     }
+                    
                 }
               });
             
@@ -243,6 +270,7 @@ function initMap() {
             map.panTo(place.geometry.location);
             map.fitBounds(place.geometry.viewport);
             } else {
+            
             map.setCenter(place.geometry.location);
             hideAllMarkers();
             map.setZoom(15);  

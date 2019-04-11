@@ -1,3 +1,9 @@
 .vscode
 key.js
 raph_api.txt
+model.pkl
+model_columns.pkl
+staticdata.csv
+weatherdata.csv
+dynamicdata.csv
+dynamic_weather.csv

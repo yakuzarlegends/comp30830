@@ -167,6 +167,13 @@ header {
     width: 30rem;
 }
 
+@media screen and  (max-width: 1200px){
+    #logo {
+        height: 25rem;
+        width: 25rem;
+    }
+}
+
 .header-col {
     display: flex;
     flex-grow: 1;
@@ -194,6 +201,24 @@ select {
 .larger {
     width: 45rem;
 }
+
+
+@media screen and (max-width: 1000px){
+    .larger {
+        width: 100%;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .weather {
+        display: none;
+    }
+}
+
+
+
 
 
 #grad1 {
@@ -388,6 +413,16 @@ label:focus {
     height: 100%;
     margin: 0 auto;
     
+}
+
+.weather {
+    padding: 0 3rem;
+}
+
+@media screen and (max-width: 1200px){
+    .weather {
+        padding: 0 1rem;
+    }
 }
 .weather-container {
     /* border: 1px solid black; */
