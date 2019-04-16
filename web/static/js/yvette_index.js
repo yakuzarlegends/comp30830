@@ -25,9 +25,6 @@ function selectChange(the_object, other_object){
     }).then(function(data){
         console.log(data.prediction)
     });
-        
-
-
 }
 
 
