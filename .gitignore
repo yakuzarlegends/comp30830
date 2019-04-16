@@ -1,6 +1,5 @@
 .vscode
 key.js
-<<<<<<< HEAD
 raph_api.txt
 model.pkl
 model_columns.pkl
@@ -10,6 +9,3 @@ dynamicdata.csv
 dynamic_weather.csv
 
 ignored
-=======
-raph_api.txt
->>>>>>> b0a2ed259bdf3ec36ed1e717788fe010b660cc4d
