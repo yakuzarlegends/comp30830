@@ -17,22 +17,9 @@ KIERAN_RDS_HOST = os.environ['KIERAN_RDS_HOST']
 KIERAN_RDS_USER = os.environ['KIERAN_RDS_USER']
 KIERAN_RDS_PW = os.environ['KIERAN_RDS_PW']
 
+RAPH_WEATHER_KEY = os.environ['RAPH_WEATHER_API']
+
 app = Flask(__name__)
-
-# connection = pymysql.connect(host=KIERAN_RDS_HOST,
-#                              user=KIERAN_RDS_USER,
-#                              password=KIERAN_RDS_PW,
-#                              db='comp30830', cursorclass=pymysql.cursors.DictCursor)
-# print(sys.path)
-
-
-
-# with connection.cursor() as cursor:
-#     # Read a single record
-#     sql = "SELECT * FROM dynamicdata WHERE download_number = (SELECT MAX(download_number) FROM dynamicdata);"
-#     cursor.execute(sql)
-#     dynamic = cursor.fetchall()
-#     connection.close()
 
 
 data = sequeler.collectData(["SELECT * FROM staticdata", "SELECT * FROM dynamicdata WHERE download_number = (SELECT MAX(download_number) FROM dynamicdata)", "SELECT * FROM weatherdata WHERE id = (SELECT MAX(id) FROM weatherdata)"])
@@ -102,9 +89,9 @@ day_dict = {
 
 
 
-@app.route("/")
-def hello():
-    return "Hello World!"
+# @app.route("/")
+# def hello():
+#     return "Hello World!"
 
 @app.route("/stations/<int:number>")
 def one_station(number):
@@ -114,21 +101,15 @@ def one_station(number):
     return "Sorry, no station data"
             
 
-@app.route("/name")
-def name():
-    return render_template('raph_home.html', stations=stations)
+# @app.route("/name")
+# def name():
+#     return render_template('raph_home.html', stations=stations)
 
-@app.route("/mapscrn")
-def map():
-    return render_template('mapscrn.html')
 
-@app.route("/index/3")
-def index3():
-    return render_template('index3.html')
     
-@app.route("/index")
-def indexer():
-    return render_template('index.html', stations=stations, dynamic=dynamicdata)
+# @app.route("/index")
+# def indexer():
+#     return render_template('index.html', stations=stations, dynamic=dynamicdata)
 
 @app.route('/api/static/')
 def coordinates():
@@ -182,7 +163,7 @@ def predict():
 
     data_dict = json.loads(weather_string["data"])
 
-    print(data_dict)
+    # print(data_dict)
 
     print("YOU WANT ", difference, " DAYS FROM NOW")
         
@@ -210,7 +191,7 @@ def predict():
         "hour": data["hour"]
     }
 
-    print("THE TYPE IS: ", type(my_new_dict["isday"]))
+    print(my_new_dict)
 
     if my_new_dict["isday"][0] > 0:
         my_new_dict["isday"] = True
@@ -223,7 +204,7 @@ def predict():
          my_new_dict["hasprecip"] = False
     
     
-    print(my_new_dict)
+    # print(my_new_dict)
 
     start_hour = int(my_new_dict["hour"]) - 3
     end_hour = int(my_new_dict["hour"]) + 4
@@ -233,24 +214,31 @@ def predict():
     for i in range(start_hour, end_hour):
         my_new_dict["hour"] = i
         new_dataframe = pd.DataFrame(my_new_dict)
-        print(new_dataframe)
+        # print(new_dataframe)
         categorical_columns = new_dataframe[['station_id', 'weekday', 'weather_text', 'hour']].columns
         for column in categorical_columns:
             new_dataframe[column] = new_dataframe[column].astype('category')
 
-        print(new_dataframe.dtypes)
+        
         query = pd.get_dummies(new_dataframe)
         query = query.reindex(columns=model_columns, fill_value=0)
         prediction = list(lr.predict(query))
         predictions.append((i, prediction))
   
     predictions.append(my_new_dict)
-    return jsonify({'prediction': str(predictions)})
+    data_lists = []
+    counter = 0
+    for item in predictions:
+        if type(item) is tuple:
+            data_lists.append(list(item))
+            counter += 1
+            print(counter)
+    return jsonify({'prediction': str(predictions), 'tuples': data_lists})
    
     # return "done"
-@app.route('/mock')
+@app.route('/')
 def mock():
-    return render_template('mockup.html', stations=stations, dynamic=dynamicdata, weather=weather)
+    return render_template('index.html', stations=stations, dynamic=dynamicdata, weather=weather)
 
 @app.route('/api/dynamic/')
 def dynamic():
@@ -270,44 +258,43 @@ if __name__ == '__main__':
     print ('Model columns loaded')
 
     # grab weather forecast from accuweather and put in database
-    # print("I'm calling it!")
-    # URL = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/207931"
-    # WEATHER_APIKEY= ""
-    # LANGUAGE = "en-us"
-    # DETAILS = "true"
-    # METRIC = "true"
+    print("I'm calling it!")
+    URL = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/207931"
+    LANGUAGE = "en-us"
+    DETAILS = "true"
+    METRIC = "true"
     
 
-    # r = requests.get(URL, params={"apikey": WEATHER_APIKEY, "language": LANGUAGE,"details": DETAILS,"metric":METRIC})
+    r = requests.get(URL, params={"apikey": RAPH_WEATHER_KEY, "language": LANGUAGE,"details": DETAILS,"metric":METRIC})
 
-    # weather_json = json.loads(r.text)
+    weather_json = json.loads(r.text)
 
-    # my_str =json.dumps(weather_json)
+    my_str =json.dumps(weather_json)
 
-    # print("type is ", type(my_str), "my_str is ", my_str)
+    print("type is ", type(my_str), "my_str is ", my_str)
 
-    # cnx = pymysql.connect(host=KIERAN_RDS_HOST, user=KIERAN_RDS_USER, password=KIERAN_RDS_PW,
-    #                             database='comp30830', local_infile=1) 
-    # cursor = cnx.cursor()
-    # script = """
-    # drop table if exists weather_forecast; 
-    # """
-    # cursor.execute(script)
-    # script = """
-    # CREATE TABLE weather_forecast (
-    #     data TEXT
-    # );
-    # """
-    # cursor.execute(script)
-    # script = " INSERT into weather_forecast VALUES (" + "'" + my_str + "'" + ");"
-    # cursor.execute(script)
+    cnx = pymysql.connect(host=KIERAN_RDS_HOST, user=KIERAN_RDS_USER, password=KIERAN_RDS_PW,
+                                database='comp30830', local_infile=1) 
+    cursor = cnx.cursor()
+    script = """
+    drop table if exists weather_forecast; 
+    """
+    cursor.execute(script)
+    script = """
+    CREATE TABLE weather_forecast (
+        data TEXT
+    );
+    """
+    cursor.execute(script)
+    script = " INSERT into weather_forecast VALUES (" + "'" + my_str + "'" + ");"
+    cursor.execute(script)
 
-    # cursor.close()
-    # cnx.commit()
-
-
+    cursor.close()
+    cnx.commit()
 
 
-    app.run(host='0.0.0.0', port=5000) 
+
+
+    app.run(host='0.0.0.0') 
 
  
